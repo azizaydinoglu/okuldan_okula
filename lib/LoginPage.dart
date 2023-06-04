@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Components/Widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'AnaSayfa.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -12,20 +13,20 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var controllerSifre = TextEditingController();
   var controllerkurumkod = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     FToast().init(context);
   }
+
   @override
   Widget build(BuildContext context) {
     var genislik = MediaQuery.of(context).size.width;
     var yukseklik = MediaQuery.of(context).size.height;
 
-    print("ekran yüksekliği: $yukseklik");
     return Scaffold(
-
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text("Giriş"),
@@ -38,24 +39,31 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     Padding(
-                      padding: EdgeInsets.only(bottom: yukseklik/150, top: yukseklik/35.37),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: yukseklik / 150, top: yukseklik / 35.37),
                     ),
                     Image.asset(
                       "assets/images/beykoz_mem_logo.png",
                       width: genislik / 2.5,
                       height: genislik / 2.5,
                     ),
-                     Padding(
-                      padding: EdgeInsets.only(bottom:yukseklik/150, top: yukseklik/14.14),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: yukseklik / 150, top: yukseklik / 14.14),
                     ),
-                    buildTextField(controllerkurumkod, "kurum kodu", genislik / 1.5, const Icon(Icons.person), sifrelimi: false, rakamklavye: true),
-                     Padding(
-                      padding: EdgeInsets.only(bottom: yukseklik/150, top: 5),
+                    buildTextField(controllerkurumkod, "kurum kodu",
+                        genislik / 1.5, const Icon(Icons.person),
+                        sifrelimi: false, rakamklavye: true),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: yukseklik / 150, top: 5),
                     ),
-                    buildTextField(controllerSifre, "şifre", genislik / 1.5, const Icon(Icons.password_rounded), sifrelimi: true, rakamklavye: false),
-                     Padding(
-                      padding: EdgeInsets.only(bottom: yukseklik/50, top: yukseklik/150),
+                    buildTextField(controllerSifre, "şifre", genislik / 1.5,
+                        const Icon(Icons.password_rounded),
+                        sifrelimi: true, rakamklavye: false),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          bottom: yukseklik / 50, top: yukseklik / 150),
                     ),
                     buildButton("Giriş", genislik / 1.5, genislik / 8, () {
                       if (controllerkurumkod.text.isEmpty ||
@@ -67,6 +75,9 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.white,
                             ));
                       } else {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) => AnaSayfa()));
+
                         /// yapılacak işler
                         ///
                         ///
@@ -74,9 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                         ///
                         ///
                       }
-                    }, arkaplanrenk: Colors.teal,
-                        textrenk: Colors.white),
-
+                    }, arkaplanrenk: Colors.teal, textrenk: Colors.white),
                   ]),
             ),
           ),

@@ -13,6 +13,9 @@ class _AnaSayfaState extends State<AnaSayfa> {
     return  Scaffold(
       appBar: AppBar(
         title:const Text("Okuldan Okula"),
+
+        centerTitle: true,
+        backgroundColor: Colors.teal,
       ),
       body:const Center(child: Text("AnaSayfaya Hoşgeldiniz"),),
     );
