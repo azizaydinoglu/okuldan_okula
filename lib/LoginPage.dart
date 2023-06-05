@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:okuldan_okula/Components/Fonksiyonlar.dart';
 import 'Components/Widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'AnaSayfa.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+
+import 'Services/UsersCevap.dart';
+import 'Services/Users.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +20,45 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var controllerSifre = TextEditingController();
   var controllerkurumkod = TextEditingController();
+
+  List<Users> parseUsersCevap(String cevap) {
+    var jsonVeri = json.decode(cevap);
+
+    var usersCevap = UsersCevap.fromJson(jsonVeri);
+    List<Users> usersListesi = usersCevap.usersListesi;
+    return usersListesi;
+  }
+
+
+
+  Future<void> tumUsers(String kurumkod, String sifre) async {
+    var url =
+        Uri.parse("https://azizaydinoglu.online/okuldan/users/tum_users.php");
+    var cevap = await http.get(url);
+
+    var liste = parseUsersCevap(cevap.body);
+    bool durum = false;
+    for (var k in liste) {
+      if (k.user_code.toString() == kurumkod.toString() && k.user_pass.toString()==sifre) {
+        durum = true;
+        if (context.mounted) {
+
+
+
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const AnaSayfa()));
+        }
+      }
+    }
+    if (durum == false) {
+      gosterToast(
+          "Hatalı kurum kodu yada şifre",
+          const Icon(
+            Icons.error_outline,
+            color: Colors.white,
+          ));
+    }
+  }
 
   @override
   void initState() {
@@ -75,8 +121,8 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.white,
                             ));
                       } else {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (BuildContext context) => AnaSayfa()));
+                       var sifre= donusturCrypto(controllerSifre.text);
+                        tumUsers(controllerkurumkod.text, sifre.toString());
 
                         /// yapılacak işler
                         ///
